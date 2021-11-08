@@ -6,7 +6,7 @@ import Test.Tasty.HUnit
 import Angabe2
 
 spec :: TestTree
-spec = testGroup "Exercise 2" [datumTest, a_2, a_3, a_4, a_5]
+spec = testGroup "Exercise 2" [a_2, a_3, a_4, a_5]
 
 -- Daten:
 -- Gueltige Daten

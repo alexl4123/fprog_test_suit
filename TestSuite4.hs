@@ -164,6 +164,6 @@ a_4 =
         saldiere (KB [(maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann, Ausgeglichen)]),
 	  testCase "7 - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3)] ->> [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]" $
         saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]),
-      testCase "8 - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)] ->> [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]" $
+      testCase "8 (sollte momentan fehlschlagen) - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)] ->> [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]" $
         saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)]) @?= (SKB [(maxmustermann, Ausgeglichen), (maxmustermann2, Zahlungssaldo (EC 0 90))])
 	]
