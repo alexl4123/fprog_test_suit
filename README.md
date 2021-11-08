@@ -1,4 +1,4 @@
-# fprog_test_suit
+# FPROG-Test-Suite
 
 Here one can find student written tests for the lecture ''Functional Programming'' at Vienna University of Technology.
 
