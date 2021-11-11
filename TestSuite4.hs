@@ -22,6 +22,7 @@ gertrud = GP "Gertrud" (D XXIX Feb 2000)
 karl = GP "Karl" (D XXIX Feb 2001)
 maxmustermann = GP "Max Mustermann" (D XXX Feb 2020)
 maxmustermann2 = GP "Max Mustermann" (D XXXI Feb 2020)
+maxmustermann_waup = GP "Max Mustermann" (D I Mar 2020)
 
 zahlung_0 = Zahlung (C 100) ZehnProzent (D XXI Feb 1999)
 zahlung_1 = Zahlung (C 1000) DreiProzent (D XXXI Dez 1999)
@@ -155,15 +156,15 @@ a_4 =
       testCase "2 - saldiere [(hans, zahlung_0), (hans, gutschrift_0), (hans, gutschrift_1)] ->> [(hans, Forderungssaldo (EC 9 11))]" $
         saldiere (KB [(hans, zahlung_0), (hans, gutschrift_0), (hans, gutschrift_1)]) @?= (SKB [(hans, Forderungssaldo (EC 9 11))]),
       testCase "3 - saldiere [(ulfride, zahlung_4), (hans, zahlung_0), (kevin, gutschrift_1), (hans2, zahlung_2), (hans, gutschrift_0), (hans, gutschrift_1), (ulfride, zahlung_3)] ->> [(hans, Forderungssaldo (EC 9 11)), (hans2, Zahlungssaldo (EC 95 0)), (kevin, Forderungssaldo (EC 10 0)), (ulfride, Zahlungssaldo (EC 5 0))]" $
-        saldiere (KB [(ulfride, zahlung_4), (hans, zahlung_0), (kevin, gutschrift_0), (hans2, zahlung_2), (hans, gutschrift_0), (hans, gutschrift_1), (ulfride, zahlung_3)]) @?= (SKB [(hans2, Zahlungssaldo (EC 95 0)), (hans, Forderungssaldo (EC 9 11)), (kevin, Forderungssaldo (EC 10 0)), (ulfride, Zahlungssaldo (EC 10 0))]),
+        saldiere (KB [(ulfride, zahlung_4), (hans, zahlung_0), (kevin, gutschrift_0), (hans2, zahlung_2), (hans, gutschrift_0), (hans, gutschrift_1), (ulfride, zahlung_3)]) @?= (SKB [(a_hans2, Zahlungssaldo (EC 95 0)), (a_hans, Forderungssaldo (EC 9 11)), (a_kevin, Forderungssaldo (EC 10 0)), (a_ulfride, Zahlungssaldo (EC 10 0))]),
       testCase "4 - saldiere [(maxmustermann, zahlung_5)] ->> [(maxmustermann, Zahlungssaldo (EC 9 0)]" $
-        saldiere (KB [(maxmustermann, zahlung_5)]) @?= (SKB [(maxmustermann, Zahlungssaldo (EC 9 0))]),
-	  testCase "5 - saldiere [(maxmustermann, gutschrift_3)] ->> [(maxmustermann, Zahlungssaldo (EC 9 0)]" $
-        saldiere (KB [(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann, Forderungssaldo (EC 9 0))]),
-	  testCase "6 - saldiere [(maxmustermann, zahlung_5), (maxmustermann, gutschrift_3)] ->> [(maxmustermann, Ausgeglichen)]" $
-        saldiere (KB [(maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann, Ausgeglichen)]),
-	  testCase "7 - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3)] ->> [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]" $
-        saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]),
-      testCase "8 (sollte momentan fehlschlagen) - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)] ->> [(maxmustermann, Ausgeglichen), (maxmustermann2, Ausgeglichen)]" $
-        saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)]) @?= (SKB [(maxmustermann, Ausgeglichen), (maxmustermann2, Zahlungssaldo (EC 0 90))])
-	]
+        saldiere (KB [(maxmustermann, zahlung_5)]) @?= (SKB [(maxmustermann_waup, Zahlungssaldo (EC 9 0))]),
+      testCase "5 - saldiere [(maxmustermann, gutschrift_3)] ->> [(maxmustermann, Zahlungssaldo (EC 9 0)]" $
+        saldiere (KB [(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann_waup, Forderungssaldo (EC 9 0))]),
+      testCase "6 - saldiere [(maxmustermann, zahlung_5), (maxmustermann, gutschrift_3)] ->> [(maxmustermann, Ausgeglichen)]" $
+        saldiere (KB [(maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann_waup, Ausgeglichen)]),
+      testCase "7 - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3)] ->> [(maxmustermann_waup, Ausgeglichen)]" $
+        saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3)]) @?= (SKB [(maxmustermann_waup, Ausgeglichen)]),
+      testCase "8 - saldiere [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5), (maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)] ->> [(GP \"Max Mustermann\" (D I Mar 2020), Ausgeglichen)]" $
+        saldiere (KB [(maxmustermann2, zahlung_5), (maxmustermann2, gutschrift_3), (maxmustermann, zahlung_5),(maxmustermann, gutschrift_3), (maxmustermann2, zahlung_0)]) @?= (SKB [(maxmustermann_waup, Zahlungssaldo (EC 0 90))])
+    ]
