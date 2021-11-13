@@ -8,6 +8,11 @@ import Test.Tasty.HUnit
 
 import Angabe5
 
+-- Hier Test Gruppen hinzufuegen
+-- Add test groups here
+spec :: TestTree
+spec = testGroup "Exercise 5" [a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8]
+
 -- Das hier nach der `module ... where` Anweisung
 -- Das hier irgendwo im code.
 expectError :: a -> String -> Assertion
@@ -60,9 +65,29 @@ b_m5 = [b1,b2,b3] :: [] (Baum Char)
 b_m6 = [b1,b2,b1] :: [] (Baum Char)
 b_m7 = [b1] :: [] (Baum Char)
 
-spec :: TestTree
-spec = testGroup "Exercise 5" [a_1, a_2, a_3, a_4, a_5]
+mm1 = leer :: [] (ElemTyp Char)
+mm2 = [ET 'a', ET 'b', ET 'c', ET 'd', ET 'e', ET 'a']
+mm3 = [ET 'a', ET 'b', ET 'c']
+mm4 = [ET 'a', ET 'd', ET 'e']
+mm5 = [ET 'b', ET 'd', ET 'a', ET 'a', ET 'c', ET 'e']
 
+phm1 = leer :: [] (PH_ElemTyp Char Int (Baum Char) (Paar Int Char) Funktion)
+phm2 = [A 'B', B 2, C b2, D (P (1,'A')), E f1]
+phm3 = [E f1, E f1, A 'C']
+phm4 = [A 'B', B 2, C b2]
+phm5 = [D (P (1, 'A')), E f1]
+phm6 = [E f1, C b2, B 2, D (P (1, 'A')), A 'B']
+
+phmm1 = leer :: [] (PH_ElemTyp' Char Int String)
+phmm2 = [Q 'A', Q 'A', Q 'A', Q 'B', R 5] :: [] (PH_ElemTyp' Char Int String)
+phmm3 = [Q 'A', Q 'A', R 5] :: [] (PH_ElemTyp' Char Int String)
+phmm4 = [Q 'A', Q 'B'] :: [] (PH_ElemTyp' Char Int String)
+phmm5 = [Q 'A', R 5, Q 'A', Q 'B', Q 'A'] :: [] (PH_ElemTyp' Char Int String)
+phmm6 = [Q 'A'] :: [] (PH_ElemTyp' Char Int String)
+
+-------------------------------------------------------------------------
+-- TESTS
+-------------------------------------------------------------------------
 a_1 :: TestTree
 a_1 =
   testGroup
@@ -209,3 +234,116 @@ a_5 =
       testCase "ET f1 == ET f3 ->> True" $
         ET f1 == ET f3 @?= True
     ]
+
+a_6 :: TestTree
+a_6 = 
+  testGroup
+    "a_6"
+    [ testCase "sind_gleich mm1 mm2 ->> False" $
+        sind_gleich mm1 mm2 @?= False,
+      testCase "sind_gleich mm2 mm5 ->> True" $
+        sind_gleich mm2 mm5 @?= True,
+      testCase "sind_gleich mm2 mm3 ->> False" $
+        sind_gleich mm2 mm3 @?= False,
+      testCase "ist_teilmenge mm3 mm2 ->> True" $
+        ist_teilmenge mm3 mm2 @?= True,
+      testCase "ist_teilmenge mm3 mm2 ->> False" $
+        ist_teilmenge mm2 mm3 @?= False,
+      testCase "ist_obermenge mm3 mm2 ->> True" $
+        ist_obermenge mm2 mm3 @?= True,
+      testCase "ist_teilmenge mm2 mm5 ->> True" $
+        ist_teilmenge mm2 mm5 @?= True, 
+      testCase "vereinige mm1 mm2 ->> mm2" $
+        sind_gleich (vereinige mm1 mm2) mm2 @?= True,
+      testCase "vereinige mm3 mm4 ->> mm2" $
+        sind_gleich (vereinige mm3 mm4) mm2 @?= True,
+      testCase "vereinige mm4 mm3 ->> mm2" $
+        sind_gleich (vereinige mm4 mm3) mm2 @?= True,
+      testCase "schneide mm2 mm5 ->> mm5" $
+        sind_gleich (schneide mm2 mm5) mm5 @?= True,
+      testCase "schneide mm2 mm3 ->> mm3" $
+        sind_gleich (schneide mm2 mm3) mm3 @?= True,
+      testCase "schneide mm3 mm2 ->> mm3" $
+        sind_gleich (schneide mm3 mm2) mm3 @?= True,
+      testCase "ziehe_ab mm2 mm3 ->> mm4" $
+        sind_gleich (ziehe_ab mm2 mm3) mm4 @?= True,
+      testCase "ziehe_ab mm3 mm2 ->> mm1" $
+        sind_gleich (ziehe_ab mm3 mm2) mm1 @?= True,
+      testCase "ziehe_ab mm2 mm1 ->> mm2" $
+        sind_gleich (ziehe_ab mm2 mm1) mm2 @?= True,
+      testCase "anzahl 'a' mm1 ->> 0" $
+        anzahl (ET 'a') mm1 @?= 0,
+      testCase "anzahl 'a' mm2 ->> 2" $
+        anzahl (ET 'a') mm2 @?= 2
+    ]
+
+a_7 :: TestTree
+a_7 =
+  testGroup
+    "a_7"
+    [ testCase "sind_gleich phm1 phm1 ->> True" $
+        sind_gleich phm1 phm1 @?= True,
+      testCase "sind_gleich phm1 phm2 ->> False" $
+        sind_gleich phm1 phm2 @?= False,
+      testCase "sind_gleich phm2 phm6 ->> True" $
+        sind_gleich phm2 phm6 @?= True,
+      testCase "sind_gleich phm3 phm6 ->> Error Fehler" $
+        expectError (sind_gleich phm3 phm6) ("Fehler"),
+      testCase "ist_teilmenge phm2 phm6 ->> True" $
+        ist_teilmenge phm2 phm6 @?= True,
+      testCase "ist_obermenge phm2 phm6 ->> True" $
+        ist_obermenge phm2 phm6 @?= True,
+      testCase "vereinige phm1 phm2 ->> phm2" $
+        sind_gleich (vereinige phm1 phm2) phm2 @?= True,
+      testCase "vereinige phm5 phm4 ->> phm2" $
+        sind_gleich (vereinige phm5 phm4) phm2 @?= True,
+      testCase "vereinige phm6 phm2 ->> phm2" $
+        sind_gleich (vereinige phm6 phm2) phm2 @?= True,
+      testCase "schneide phm2 phm1 ->> phm1" $
+        sind_gleich (schneide phm2 phm1) phm1 @?= True,
+      testCase "schneide phm2 phm4 ->> phm4" $
+        sind_gleich (schneide phm2 phm4) phm4 @?= True,
+      testCase "ziehe_ab phm2 phm6 ->> phm1" $
+        sind_gleich (ziehe_ab phm2 phm6) phm1 @?= True,
+      testCase "ziehe_ab phm2 phm5 ->> phm4" $
+        sind_gleich (ziehe_ab phm2 phm5) phm4 @?= True
+    ]
+
+a_8 :: TestTree
+a_8 = 
+  testGroup
+    "a_8"
+    [ testCase "sind_gleich phmm1 phmm1 ->> True" $
+        sind_gleich phmm1 phmm1 @?= True,
+      testCase "sind_gleich phmm2 phmm5 ->> True" $
+        sind_gleich phmm2 phmm5 @?= True,
+      testCase "sind_gleich phmm3 phmm5 ->> False" $
+        sind_gleich phmm3 phmm5 @?= False,
+      testCase "ist_teilmenge phmm3 phmm2 ->> True" $
+        ist_teilmenge phmm3 phmm2 @?= True,
+      testCase "ist_obermenge phmm4 phmm3 ->> False" $
+        ist_obermenge phmm4 phmm3 @?= False,
+      testCase "vereinige phmm1 phmm2 ->> phmm2" $
+        sind_gleich (vereinige phmm1 phmm2) phmm2 @?= True,
+      testCase "vereinige phmm3 phmm4 ->> phmm2" $
+        sind_gleich (vereinige phmm3 phmm4) phmm2 @?= True,
+      testCase "schneide phmm2 phmm3 ->> phmm3" $
+        sind_gleich (schneide phmm2 phmm3) phmm3 @?= True,
+      testCase "schneide phmm3 phmm4 ->> phmm6" $
+        sind_gleich (schneide phmm3 phmm4) phmm6 @?= True,
+      testCase "ziehe_ab phmm2 phmm3 ->> phmm4" $
+        sind_gleich (ziehe_ab phmm2 phmm3) phmm4 @?= True,
+      testCase "ziehe_ab phmm3 phmm2 ->> phmm1" $
+        sind_gleich (ziehe_ab phmm3 phmm2) phmm1 @?= True
+    ]
+
+
+
+
+
+
+
+
+
+
+
