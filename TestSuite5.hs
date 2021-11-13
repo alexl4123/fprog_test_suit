@@ -17,12 +17,13 @@ expectError val msg = do
     Left (ErrorCall err) -> err @?= msg
     Right _ -> assertFailure "Expected error call"
 
-
+b1 = Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e')
+b2 = Blatt 'a'
+b3 = Knoten (Blatt 'x') 'y' (Blatt 'z')
 
 f1 = Fkt (\a -> a + II)
 f2 = Fkt (\a -> a + IV)
 f3 = Fkt (\a -> II + a)
-
 
 int_m1 = leer :: [] Int
 int_m2 = [1,2,3,4,5] :: [] Int
@@ -46,8 +47,21 @@ f_m4 = [f2] :: [] Funktion
 f_m5 = [f1, f2] :: [] Funktion
 f_m6 = [f2, f3] :: [] Funktion
 
+p_m1 = leer :: [] (Paar Int Int)
+p_m2 = [P (1,2), P (1,3)] :: [] (Paar Int Int)
+p_m3 = [P (1,2)] :: [] (Paar Int Int)
+p_m4 = [P (1,3)] :: [] (Paar Int Int)
+
+b_m1 = leer :: [] (Baum Char)
+b_m2 = [b2] :: [] (Baum Char)
+b_m3 = [b1, b2] :: [] (Baum Char)
+b_m4 = [b3, b2] :: [] (Baum Char)
+b_m5 = [b1,b2,b3] :: [] (Baum Char)
+b_m6 = [b1,b2,b1] :: [] (Baum Char)
+b_m7 = [b1] :: [] (Baum Char)
+
 spec :: TestTree
-spec = testGroup "Exercise 5" [a_1, a_2, a_3]
+spec = testGroup "Exercise 5" [a_1, a_2, a_3, a_4, a_5]
 
 a_1 :: TestTree
 a_1 =
@@ -147,4 +161,51 @@ a_3 =
         sind_gleich (vereinige f_m2 f_m3) f_m3 @?= True,
       testCase "vereinige f_m2 f_m4 ->> f_m5" $
         sind_gleich (vereinige f_m2 f_m3) f_m2 @?= True
+    ]
+
+a_4 :: TestTree
+a_4 = 
+  testGroup
+    "a_4"
+    [ testCase "sind_gleich p_m1 p_m2 ->> False" $
+        sind_gleich p_m1 p_m2 @?= False,
+      testCase "sind_gleich p_m1 p_m1 ->> True" $
+        sind_gleich p_m1 p_m1 @?= True,
+      testCase "vereinige p_m3 p_m4 ->> p_m2" $
+        sind_gleich (vereinige p_m3 p_m4) p_m2 @?= True,
+      testCase "vereinige p_m2 p_m3 ->> p_m2" $
+        sind_gleich (vereinige p_m2 p_m3) p_m2 @?= True,
+      testCase "schneide p_m3 p_m4 ->> p_m1" $
+        sind_gleich (schneide p_m3 p_m4) p_m1 @?= True,
+      testCase "schneide p_m2 p_m3 ->> p_m3" $
+        sind_gleich (schneide p_m2 p_m3) p_m3 @?= True,
+      testCase "ziehe_ab p_m2 p_m3 ->> p_m4" $ 
+        sind_gleich (ziehe_ab p_m2 p_m3) p_m4 @?= True,
+
+      testCase "sind_gleich b_m1 b_m6 ->> error Fehler" $
+        expectError (sind_gleich b_m1 b_m6) ("Fehler"),
+      testCase "sind_gleich b_m1 b_m2 ->> False" $
+        sind_gleich b_m1 b_m2 @?= False,
+      testCase "vereinige b_m3 b_m4 ->> p_m5" $
+        sind_gleich (vereinige b_m3 b_m4) b_m5 @?= True,
+      testCase "schneide b_m3 b_m4 ->> b_m2" $
+        sind_gleich (schneide b_m3 b_m4) b_m2 @?= True,
+      testCase "ziehe-ab b_m3 b_m4 ->> b_m7" $
+        sind_gleich (ziehe_ab b_m3 b_m4) b_m7 @?= True,
+      testCase "anzahl b1 b_m2 ->> 0" $
+        anzahl b1 b_m2 @?= 0,
+      testCase "anzahl b1 b_m3 ->> 1" $ 
+        anzahl b1 b_m3 @?= 1,
+      testCase "anzahl b1 b_m6 ->> error Fehler" $
+        expectError (anzahl b1 b_m6) ("Fehler")
+    ]
+
+a_5 :: TestTree
+a_5 = 
+  testGroup
+    "a_5"
+    [ testCase "ET 'a' == ET 'b' ->> False" $
+        ET 'a' == ET 'b' @?= False,
+      testCase "ET f1 == ET f3 ->> True" $
+        ET f1 == ET f3 @?= True
     ]
