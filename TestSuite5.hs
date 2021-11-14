@@ -29,6 +29,10 @@ b3 = Knoten (Blatt 'x') 'y' (Blatt 'z')
 f1 = Fkt (\a -> a + II)
 f2 = Fkt (\a -> a + IV)
 f3 = Fkt (\a -> II + a)
+f4 = Fkt (\a -> a - 3)
+f5 = Fkt (\a -> a * 2)
+f6 = Fkt (\a -> a + 11)
+f7 = Fkt (\a -> a - 15)
 
 int_m1 = leer :: [] Int
 int_m2 = [1,2,3,4,5] :: [] Int
@@ -126,9 +130,25 @@ a_2 =
         (f1 == f2) @?= False,
       testCase "f1 == f3 ->> True" $
         (f1 == f3) @?= True,
+      testCase "f6 == f7 ->> True" $
+        (f6 == f7) @?= True,
+      testCase "f4 == f5 ->> False" $
+        (f4 == f5) @?= False,
       testCase "show f1 ->> {(N,II),(I,III),(II,IV),(III,V),(IV,VI),(V,VII),(VI,VIII),(VII,IX),(VIII,X),(IX,F),(X,F),(F,F)}" $
-        show f1 @?= "{(N,II),(I,III),(II,IV),(III,V),(IV,VI),(V,VII),(VI,VIII),(VII,IX),(VIII,X),(IX,F),(X,F),(F,F)}"
-    ]
+        show f1 @?= "{(N,II),(I,III),(II,IV),(III,V),(IV,VI),(V,VII),(VI,VIII),(VII,IX),(VIII,X),(IX,F),(X,F),(F,F)}",
+      testCase "show f2 ->> {(N,IV),(I,V),(II,VI),(III,VII),(IV,VIII),(V,IX),(VI,X),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}" $
+        show f2 @?= "{(N,IV),(I,V),(II,VI),(III,VII),(IV,VIII),(V,IX),(VI,X),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}",
+      testCase "show f3 ->> {(N,II),(I,III),(II,IV),(III,V),(IV,VI),(V,VII),(VI,VIII),(VII,IX),(VIII,X),(IX,F),(X,F),(F,F)}" $
+        show f3 @?= "{(N,II),(I,III),(II,IV),(III,V),(IV,VI),(V,VII),(VI,VIII),(VII,IX),(VIII,X),(IX,F),(X,F),(F,F)}",
+      testCase "show f4 ->> {(N,F),(I,F),(II,F),(III,N),(IV,I),(V,II),(VI,III),(VII,IV),(VIII,V),(IX,VI),(X,VII),(F,F)}" $
+        show f4 @?= "{(N,F),(I,F),(II,F),(III,N),(IV,I),(V,II),(VI,III),(VII,IV),(VIII,V),(IX,VI),(X,VII),(F,F)}",
+      testCase "show f5 ->> {(N,N),(I,II),(II,IV),(III,VI),(IV,VIII),(V,X),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}" $
+        show f5 @?= "{(N,N),(I,II),(II,IV),(III,VI),(IV,VIII),(V,X),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}",
+      testCase "show f6 ->> {(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}" $
+        show f6 @?= "{(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}",
+      testCase "show f7 ->> {(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}" $
+        show f7 @?= "{(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}"
+	]
 
 a_3 :: TestTree
 a_3 = 
@@ -142,24 +162,62 @@ a_3 =
         expectError (sind_gleich int_m8 int_m6) ("Fehler"),
       testCase "vereinige int_m1 int_m2 ->> int_m2" $
         sind_gleich (vereinige int_m1 int_m2) int_m2 @?= True,
+      testCase "vereinige int_m2 int_m1 ->> int_m2" $
+        sind_gleich (vereinige int_m2 int_m1) int_m2 @?= True,
       testCase "vereinige int_m1 int_m6 ->> error Fehler" $
-        expectError (vereinige int_m1 int_m6 ) ("Fehler"),
+        expectError (vereinige int_m1 int_m6) ("Fehler"),
+      testCase "vereinige int_m6 int_m1 ->> error Fehler" $
+        expectError (vereinige int_m6 int_m1) ("Fehler"),
       testCase "vereinige int_m2 int_m3 ->> int_m2" $
         sind_gleich (vereinige int_m2 int_m3) int_m2 @?= True,
       testCase "vereinige int_m4 int_m3 ->> int_m7" $
         sind_gleich (vereinige int_m4 int_m3) int_m7 @?= True,
+      testCase "vereinige int_m4 int_m4 ->> int_m4" $
+        sind_gleich (vereinige int_m4 int_m4) int_m4 @?= True,
       testCase "schneide int_m1 int_m7 ->> int_m1" $
         sind_gleich (schneide int_m1 int_m7) int_m1 @?= True,
       testCase "schneide int_m2 int_m4 ->> int_m5" $
         sind_gleich (schneide int_m2 int_m4) int_m5 @?= True,
+      testCase "schneide int_m5 int_m9 ->> int_m1" $
+        sind_gleich (schneide int_m5 int_m9) int_m1 @?= True,
+      testCase "schneide int_m8 int_m8 ->> int_m8" $
+        sind_gleich (schneide int_m8 int_m8) int_m8 @?= True,
       testCase "schneide int_m4 int_m6 ->> error Fehler" $
         expectError (schneide int_m4 int_m6) ("Fehler"),
       testCase "ziehe_ab int_m4 int_m5 ->> int_m9" $
         sind_gleich (ziehe_ab int_m4 int_m5) int_m9 @?= True,
       testCase "ziehe_ab int_m5 int_m4 ->> int_m1" $
         sind_gleich (ziehe_ab int_m5 int_m4) int_m1 @?= True,
+      testCase "ziehe_ab int_m5 int_m9 ->> int_m5" $
+        sind_gleich (ziehe_ab int_m5 int_m9) int_m5 @?= True,
+      testCase "ziehe_ab int_m5 int_m5 ->> int_m1" $
+        sind_gleich (ziehe_ab int_m5 int_m5) int_m1 @?= True,
+      testCase "ziehe_ab int_m2 int_m6 ->> error Fehler" $
+        expectError (ziehe_ab int_m2 int_m6) ("Fehler"),
+      testCase "ziehe_ab int_m6 int_m3 ->> error Fehler" $
+        expectError (ziehe_ab int_m6 int_m3) ("Fehler"),
       testCase "ist_teilmenge int_m5 int_m4 ->> True" $
         ist_teilmenge int_m5 int_m4  @?= True,
+      testCase "ist_teilmenge int_m5 int_m2 ->> True" $
+        ist_teilmenge int_m5 int_m2  @?= True,
+      testCase "ist_teilmenge int_m2 int_m5 ->> False" $
+        ist_teilmenge int_m2 int_m5  @?= False,
+      testCase "ist_teilmenge int_m9 int_m9 ->> True" $
+        ist_teilmenge int_m9 int_m9  @?= True,
+      testCase "ist_teilmenge int_m1 int_m9 ->> True" $
+        ist_teilmenge int_m1 int_m9  @?= True,
+      testCase "ist_teilmenge int_m1 int_m6 ->> True" $
+        expectError (ist_teilmenge int_m1 int_m6) ("Fehler"),
+      testCase "ist_teilmenge int_m6 int_m6 ->> True" $
+        expectError (ist_teilmenge int_m6 int_m6) ("Fehler"),
+      testCase "anzahl 2 int_m1 ->> 0" $
+        anzahl 2 int_m1  @?= 0,
+      testCase "anzahl 2 int_m5 ->> 0" $
+        anzahl 2 int_m5  @?= 0,
+      testCase "anzahl 6 int_m4 ->> 1" $
+        anzahl 6 int_m4  @?= 1,
+      testCase "anzahl 2 int_m6 ->> error Fehler" $
+        expectError (anzahl 2 int_m6) ("Fehler"),
       
       testCase "vereinige z_m1 z_m2 ->> z_m2" $
         sind_gleich (vereinige z_m1 z_m2) z_m2 @?= True,
@@ -232,7 +290,29 @@ a_5 =
     [ testCase "ET 'a' == ET 'b' ->> False" $
         ET 'a' == ET 'b' @?= False,
       testCase "ET f1 == ET f3 ->> True" $
-        ET f1 == ET f3 @?= True
+        ET f1 == ET f3 @?= True,
+      testCase "show p_m1 ->> []" $
+        show p_m1 @?= "[]",
+      testCase "show p_m2 ->> [P (1,2),P (1,3)]" $
+        show p_m2 @?= "[P (1,2),P (1,3)]",
+      testCase "show p_m3 ->> [P (1,2)]" $
+        show p_m3 @?= "[P (1,2)]",
+      testCase "show p_m4 ->> [P (1,3)]" $
+        show p_m4 @?= "[P (1,3)]",
+      testCase "show b_m1 ->> []" $
+        show b_m1 @?= "[]",
+      testCase "show b_m2 ->> [Blatt 'a']" $
+        show b_m2 @?= "[Blatt 'a']",
+      testCase "show b_m3 ->> [Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a']" $
+        show b_m3 @?= "[Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a']",
+      testCase "show b_m4 ->> [Knoten (Blatt 'x') 'y' (Blatt 'z'),Blatt 'a']" $
+        show b_m4 @?= "[Knoten (Blatt 'x') 'y' (Blatt 'z'),Blatt 'a']",
+      testCase "show b_m5 ->> [Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a',Knoten (Blatt 'x') 'y' (Blatt 'z')]" $
+        show b_m5 @?= "[Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a',Knoten (Blatt 'x') 'y' (Blatt 'z')]",
+      testCase "show b_m6 ->> [Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a',Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e')]" $
+        show b_m6 @?= "[Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e'),Blatt 'a',Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e')]",
+      testCase "show b_m7 ->> [Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e')]" $
+        show b_m7 @?= "[Knoten (Knoten (Blatt 'a') 'b' (Blatt 'c')) 'd' (Blatt 'e')]"
     ]
 
 a_6 :: TestTree
