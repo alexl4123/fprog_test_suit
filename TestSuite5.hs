@@ -148,7 +148,7 @@ a_2 =
         show f6 @?= "{(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}",
       testCase "show f7 ->> {(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}" $
         show f7 @?= "{(N,F),(I,F),(II,F),(III,F),(IV,F),(V,F),(VI,F),(VII,F),(VIII,F),(IX,F),(X,F),(F,F)}"
-	]
+    ]
 
 a_3 :: TestTree
 a_3 = 
