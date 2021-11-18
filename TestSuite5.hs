@@ -269,7 +269,7 @@ a_4 =
         expectError (sind_gleich b_m1 b_m6) ("Fehler"),
       testCase "sind_gleich b_m1 b_m2 ->> False" $
         sind_gleich b_m1 b_m2 @?= False,
-      testCase "vereinige b_m3 b_m4 ->> p_m5" $
+      testCase "vereinige b_m3 b_m4 ->> b_m5" $
         sind_gleich (vereinige b_m3 b_m4) b_m5 @?= True,
       testCase "schneide b_m3 b_m4 ->> b_m2" $
         sind_gleich (schneide b_m3 b_m4) b_m2 @?= True,
