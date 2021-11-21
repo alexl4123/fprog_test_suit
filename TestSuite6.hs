@@ -47,6 +47,10 @@ m12 = Mf (1,3) (\z s -> if (s == 1) then 1
                         else -1) :: MatrixF
 m13 = Mf (2,3) (\s z -> z * s + (z-1) * (mod s 2))  :: MatrixF
 
+-- Fuer Multiplikation
+m14 = Mf (2,3) (\z s -> if z == 1 then s else z+s) :: MatrixF
+m15 = Mf (3,2) (\z s -> if z == 1 then s else z+s) :: MatrixF
+m16 = Mf (4,2) (\z s -> if z == 1 then s else z+s) :: MatrixF
 
 -- Hilfsfunktionen
 fib :: Nat0 -> Nat0
@@ -166,6 +170,10 @@ a_5 =
         show (m1 - m1) @?= "([0,0] [0,0])", 
       testCase "m5 - m6 ->> ([0,0] [0,0] [0,0])" $
         show (m5 - m6) @?= "([0,0] [0,0] [0,0])",
+      testCase "m1 - m5 ->> ()" $
+        show (m1 - m5) @?= "()", 
+      testCase "m7 - m1 ->> ()" $
+        show (m7 + m1) @?= "()", 
       testCase "negate m5 ->> ([-1,-2] [-3,-4] [-5,-6])" $
         show (negate m5) @?= "([-1,-2] [-3,-4] [-5,-6])",
       testCase "negate m7 ->> ()" $
@@ -176,6 +184,8 @@ a_5 =
         show (abs (negate m7)) @?= "()",
       testCase "fromInteger 1 ->> ([1])" $
         show (fromInteger 1 :: MatrixF) @?= "([1])",
+      testCase "fromInteger -5 ->> ([-5])" $
+        show (fromInteger (-5) :: MatrixF) @?= "([-5])",
       testCase "signum m1 ->> 1" $
         signum m1 @?= 1,
       testCase "signum (negate m1) ->> -1" $
@@ -191,7 +201,13 @@ a_5 =
       testCase "m1 * m3 ->> ([7,10] [15,22])" $
         show (m1 * m3) @?= "([7,10] [15,22])",        
       testCase "m6 * m13 ->> ([5,11,17] [11,25,39] [17,39,61])" $
-        show (m6 * m13) @?= "([5,11,17] [11,25,39] [17,39,61])"
+        show (m6 * m13) @?= "([5,11,17] [11,25,39] [17,39,61])",
+      testCase "m14 * m15 ->> ([19,25] [35,47])" $
+        show (m14 * m15) @?= "([19,25] [35,47])", 
+      testCase "m14 * m16 ->> ()" $
+        show (m14 * m16) @?= "()",
+      testCase "m1 * m7 ->> ()" $
+        show (m1 * m7) @?= "()"
     ]
 
 
