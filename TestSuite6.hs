@@ -130,7 +130,7 @@ a_4 =
       testCase "m1 == m2 ->> True" $
         m1 == m2 @?= True,
       testCase "m1 == m4 ->> True" $
-        m1 == m1 @?= True,
+        m1 == m4 @?= True,
       testCase "m1 /= m2 ->> False" $
         m1 /= m2 @?= False,
       testCase "m1 == m5 ->> False" $
