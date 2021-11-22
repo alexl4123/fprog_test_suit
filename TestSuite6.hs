@@ -130,7 +130,7 @@ a_4 =
       testCase "m1 == m2 ->> True" $
         m1 == m2 @?= True,
       testCase "m1 == m4 ->> True" $
-        m1 == m1 @?= True,
+        m1 == m4 @?= True,
       testCase "m1 /= m2 ->> False" $
         m1 /= m2 @?= False,
       testCase "m1 == m5 ->> False" $
@@ -186,12 +186,12 @@ a_5 =
         show (fromInteger 1 :: MatrixF) @?= "([1])",
       testCase "fromInteger -5 ->> ([-5])" $
         show (fromInteger (-5) :: MatrixF) @?= "([-5])",
-      testCase "signum m1 ->> 1" $
-        signum m1 @?= 1,
-      testCase "signum (negate m1) ->> -1" $
-        signum (negate m1) @?= -1,
-      testCase "signum m11 ->> 0" $
-        signum m11 @?= 0,
+      testCase "signum m1 ->> ([1])" $
+        show (signum m1) @?= "([1])",
+      testCase "signum (negate m1) ->> ([-1])" $
+        show (signum (negate m1)) @?= ([-1]),
+      testCase "signum m11 ->> ([0])" $
+        show (signum m11) @?= ([0]),
       testCase "signum m12 ->> error Vorzeichen undefiniert" $
         expectError (signum m12) ("Vorzeichenfunktion undefiniert"),
       testCase "signum m7 ->> error Vorzeichen undefiniert" $
