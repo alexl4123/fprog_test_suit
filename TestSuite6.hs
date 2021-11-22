@@ -189,9 +189,9 @@ a_5 =
       testCase "signum m1 ->> ([1])" $
         show (signum m1) @?= "([1])",
       testCase "signum (negate m1) ->> ([-1])" $
-        show (signum (negate m1)) @?= ([-1]),
+        show (signum (negate m1)) @?= "([-1])",
       testCase "signum m11 ->> ([0])" $
-        show (signum m11) @?= ([0]),
+        show (signum m11) @?= "([0])",
       testCase "signum m12 ->> error Vorzeichen undefiniert" $
         expectError (signum m12) ("Vorzeichenfunktion undefiniert"),
       testCase "signum m7 ->> error Vorzeichen undefiniert" $
