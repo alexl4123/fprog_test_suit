@@ -316,7 +316,7 @@ a_3 =
 a_6 :: TestTree
 a_6 = 
   testGroup
-    "a_4"
+    "a_6"
     [
       testCase "konservenrechner fp2 \"A\" \"A\" ->> Just 0" $
         konservenrechner fp2 "A" "A" @?= Just 0,
