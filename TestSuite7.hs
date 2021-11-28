@@ -6,7 +6,7 @@ import Test.Tasty.HUnit
 import Angabe7
 
 spec :: TestTree
-spec = testGroup "Exercise 7" [a_2, a_3, a_4]
+spec = testGroup "Exercise 7" [a_2, a_3, a_6]
 
 -- Matrix Instanzen --
 ungueltig1 = M [[0, 1, 2, 4], [91, 42, 43, 8], [], [1]] :: Matrix
@@ -313,8 +313,8 @@ a_3 =
             konv2 fm20 @?= fm20_konv
     ]
 
-a_4 :: TestTree
-a_4 = 
+a_6 :: TestTree
+a_6 = 
   testGroup
     "a_4"
     [
